@@ -61,6 +61,7 @@ const checkCards = (e) => {
     const clickedCard = e.target
     clickedCard.classList.add('flipped');
     const flippedCards = document.querySelectorAll('.flipped');
+    const toggleCard = document.querySelectorAll('.toggleCard');
     console.log(flippedCards);
     // Logic
     if (flippedCards.length === 2){
@@ -84,26 +85,35 @@ const checkCards = (e) => {
             playerLives--;
             playerLivesCount.textContent = playerLives;
             if(playerLives===0) {
-                restart();
+                restart("Soz...try again");
             }
         }
+    }
+    // RUn a check to see if we won the game
+    if(toggleCard.length === 16){
+        restart("Woah, you won!");
     }
 };
 
 // Restart
-const restart = () => {
+const restart = (text) => {
     let cardData = randomize();
     let faces = document.querySelectorAll('.face');
     let cards = document.querySelectorAll('.card');
+    section.style.pointerEvents = 'none';
     cardData.forEach((item, index) => {
         cards[index].classList.remove('toggleCard');
-        // Randomiz
-        cards[index].style.pointerEvents = 'all';
-        faces[index].src = item.imgSrc;
-        cards[index].setAttribute('name', item.name);
+        // Randomize
+        setTimeout(() => {
+            cards[index].style.pointerEvents = 'all';
+            faces[index].src = item.imgSrc;
+            cards[index].setAttribute('name', item.name);
+            section.style.pointerEvents = 'all';
+        }, 1000);
     });
     playerLives = 6;
     playerLivesCount.textContent = playerLives;
+    setTimeout(() => window.alert(text), 100);
 };
 
 cardGenerator();
